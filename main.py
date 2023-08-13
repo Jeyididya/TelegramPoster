@@ -87,6 +87,6 @@ while True:
 
     else:
         continue
-    print("sleeping for ", sleep_time)
+    print("sleeping for ", sleep_time*60)
 
     sleep(int(sleep_time))
