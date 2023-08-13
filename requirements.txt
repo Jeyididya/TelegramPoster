@@ -3,7 +3,7 @@ cachetools==4.2.2
 certifi==2023.7.22
 charset-normalizer==3.2.0
 idna==3.4
-Pillow==10.0.0
+Pillow
 python-decouple==3.8
 python-telegram-bot==13.14
 pytz==2023.3
