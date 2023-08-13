@@ -4,7 +4,7 @@ certifi==2023.7.22
 charset-normalizer==3.2.0
 dnspython
 idna==3.4
-Pillow==10.0.0
+Pillow
 pymongo==4.4.1
 python-decouple==3.8
 python-telegram-bot==13.14
