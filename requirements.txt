@@ -3,12 +3,12 @@ cachetools==4.2.2
 certifi==2023.7.22
 charset-normalizer==3.2.0
 click==8.1.6
-dnspython==2.4.2
+dnspython
 gunicorn==21.2.0
 h11==0.14.0
 idna==3.4
 packaging==23.1
-Pillow==10.0.0
+Pillow
 pymongo==4.4.1
 python-decouple==3.8
 python-telegram-bot==13.14
