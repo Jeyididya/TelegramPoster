@@ -1,0 +1,16 @@
+APScheduler==3.6.3
+cachetools==4.2.2
+certifi==2023.7.22
+charset-normalizer==3.2.0
+dnspython
+idna==3.4
+Pillow
+pymongo==4.4.1
+python-decouple==3.8
+python-telegram-bot==13.14
+pytz==2023.3
+requests==2.31.0
+six==1.16.0
+tornado==6.1
+tzlocal==5.0.1
+urllib3==2.0.4
