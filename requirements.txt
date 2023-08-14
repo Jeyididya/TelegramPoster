@@ -2,9 +2,13 @@ APScheduler==3.6.3
 cachetools==4.2.2
 certifi==2023.7.22
 charset-normalizer==3.2.0
-dnspython
+click==8.1.6
+dnspython==2.4.2
+gunicorn==21.2.0
+h11==0.14.0
 idna==3.4
-Pillow
+packaging==23.1
+Pillow==10.0.0
 pymongo==4.4.1
 python-decouple==3.8
 python-telegram-bot==13.14
@@ -12,5 +16,7 @@ pytz==2023.3
 requests==2.31.0
 six==1.16.0
 tornado==6.1
+typing_extensions==4.7.1
 tzlocal==5.0.1
 urllib3==2.0.4
+uvicorn==0.23.2

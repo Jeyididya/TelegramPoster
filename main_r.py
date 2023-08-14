@@ -145,6 +145,9 @@ def feedback(update, context):
         log_channel, f'New Feedback from, {update.message.chat.username}-{feedback}')
 
 
+app = "place holder"
+
+
 def main() -> None:
     updater = Updater(BOT_TOKEN)
 
