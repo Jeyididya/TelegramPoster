@@ -155,6 +155,7 @@ def main() -> None:
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("rules", rules))
     dp.add_handler(CommandHandler("register", register))
+    dp.add_handler(CommandHandler("feedback", feedback))
     dp.add_handler(MessageHandler(Filters.contact, recive_phone_number))
     dp.add_handler(CallbackQueryHandler(button_click))
 
