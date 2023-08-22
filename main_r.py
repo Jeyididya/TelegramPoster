@@ -1,4 +1,4 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
 
@@ -8,7 +8,7 @@ from db import DATABASE
 from get_image import IMAGE
 from util import creative_sentences
 from random import choices
-
+from datetime import datetime
 config = Config(RepositoryEnv('.env'))
 
 BOT_TOKEN = config('BOT_TOKEN')
@@ -21,7 +21,7 @@ img = IMAGE()
 def start(update, context):
     print(update)
     update.message.reply_text(
-        "👋 Greetings! I'm here to assist you. To explore all the amazing things I can do, simply send /help. 🚀")
+        "👋 Greetings! I'm here to assist you.send /prompt to generate images or To explore all the amazing things I can do, simply send /help. 🚀")
     context.bot.send_message(
         log_channel, f'User Started, {update.message.chat.username if update.message.chat.username else update.message.chat.first_name}')
 
@@ -157,8 +157,9 @@ app = "place holder"
 
 
 def main() -> None:
+    bot=Bot(token=BOT_TOKEN)
+    bot.send_message(log_channel, f"Server Started @{datetime.now()}")
     updater = Updater(BOT_TOKEN)
-
     dp = updater.dispatcher
 
     dp.add_handler(CommandHandler("start", start))
