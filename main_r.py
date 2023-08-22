@@ -19,8 +19,11 @@ img = IMAGE()
 
 
 def start(update, context):
+    print(update)
     update.message.reply_text(
         "👋 Greetings! I'm here to assist you. To explore all the amazing things I can do, simply send /help. 🚀")
+    context.bot.send_message(
+        log_channel, f'User Started, {update.message.chat.username if update.message.chat.username else update.message.chat.first_name}')
 
 
 def help(update, context):
@@ -38,7 +41,7 @@ def help(update, context):
 
 
 def rules(update, context):
-    update.message.reply_text(f"🌟 Welcome, {update.message.chat.username}!\n\n"
+    update.message.reply_text(f"🌟 Welcome, {update.message.chat.username if update.message.chat.username else update.message.chat.first_name}!\n\n"
                               "✨ Here are the rules to create a safe and positive community within our bot:\n\n"
                               'Rule 1: \n'
                               'Rule 2: \n'
@@ -50,23 +53,23 @@ def rules(update, context):
 def recive_phone_number(update, context):
     if update.message.contact:
         phone_number = update.message.contact.phone_number
-        if not db.get_data({"username": update.message.chat.username}):
+        if not db.get_data({"username": update.message.chat.username if update.message.chat.username else update.message.chat.first_name}):
             db.add_data(
                 {
-                    "username": f"{update.message.chat.username}",
+                    "username": f"{update.message.chat.username if update.message.chat.username else update.message.chat.first_name}",
                     "phone_number": f"{phone_number}"
                 }
             )
             update.message.reply_text(
-                f"🎉 Bravo, {update.message.chat.username}!all set to unleash your creativity! 🎨\n\n"
+                f"🎉 Bravo, {update.message.chat.username if update.message.chat.username else update.message.chat.first_name}!all set to unleash your creativity! 🎨\n\n"
                 "📌 Use the mighty /prompt command to send your artistic prompt:\n"
                 "`/prompt 'your prompt'`\n"
                 "💡 Feel free to get creative!", reply_markup=ReplyKeyboardRemove())
             context.bot.send_message(
-                log_channel, f'New User Registered, {update.message.chat.username}-{phone_number}')
+                log_channel, f'New User Registered, {update.message.chat.username if update.message.chat.username else update.message.chat.first_name}-{phone_number}')
         else:
             update.message.reply_text(
-                f"🌟 Greetings, {update.message.username}! You're already a part of the creative journey! 🎨\n\n"
+                f"🌟 Greetings, {update.message.chat.username if update.message.chat.username else update.message.chat.first_name}! You're already a part of the creative journey! 🎨\n\n"
                 "Feel free to send prompts using the /prompt command:\n"
                 "🚀 Launch your imagination with the powerful /prompt command:\n"
                 "✨ Let's get creative!", reply_markup=ReplyKeyboardRemove())
@@ -89,38 +92,43 @@ def register(update, context):
 
 def prompt(update, context):
     prompt = update.message.text[len('/prompt '):]
-    # prompt = "shot of vaporwave fashion dog in miami"
-    image = img.get_image(prompt)
+    if prompt:
+        # prompt = "shot of vaporwave fashion dog in miami"
+        image = img.get_image(prompt)
 
-    like_button = InlineKeyboardButton(
-        "👍 ", callback_data=f"like_{update.message.message_id}")
-    dislike_button = InlineKeyboardButton(
-        "👎 ", callback_data=f"dislike_{update.message.message_id}")
-    keyboard = [[like_button, dislike_button]]
-    reply_markup = InlineKeyboardMarkup(keyboard)
+        like_button = InlineKeyboardButton(
+            "👍 ", callback_data=f"like_{update.message.message_id}")
+        dislike_button = InlineKeyboardButton(
+            "👎 ", callback_data=f"dislike_{update.message.message_id}")
+        keyboard = [[like_button, dislike_button]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        print(db.get_data(
+            {"username": update.message.chat.username if update.message.chat.username else update.message.chat.first_name}))
+        if not db.get_data({"username": update.message.chat.username if update.message.chat.username else update.message.chat.first_name}):
+            update.message.reply_text(
+                f"⏲️ Your image will be uploaded to {channel_name} shortly! 🎉")
+            message_sent = context.bot.send_photo(channel_name, image, caption=f"🎨 **Art Inspiration!**\n\n"
+                                                  f"📌 Prompt: {prompt}\n"
+                                                  f"👤 By: {'@'+update.message.chat.username if update.message.chat.username else update.message.chat.first_name}\n\n"
+                                                  f"🌟 {choices(creative_sentences)[0]} 🚀", reply_markup=reply_markup)
+            # context.bot.send_message(
+            #     channel_name, "in sort time", reply_markup=reply_markup)
+            context.bot.send_message(
+                log_channel, f'New Prompt from {update.message.chat.username if update.message.chat.username else update.message.chat.first_name}')
+            message_sent.forward(log_channel)
 
-    if not db.get_data({"username": update.message.chat.username}):
-        update.message.reply_text(
-            f"⏲️ Your image will be uploaded to {channel_name} shortly! 🎉")
-        message_sent = context.bot.send_photo(channel_name, image, caption=f"🎨 **Art Inspiration!**\n\n"
-                                              f"📌 Prompt: {prompt}\n"
-                                              f"👤 By: @{update.message.from_user.username}\n\n"
-                                              f"🌟 {choices(creative_sentences)[0]} 🚀", reply_markup=reply_markup)
-        # context.bot.send_message(
-        #     channel_name, "in sort time", reply_markup=reply_markup)
-        context.bot.send_message(
-            log_channel, f'New Prompt from {update.message.chat.username}')
-        message_sent.forward(log_channel)
-
+        else:
+            message_sent_private = context.bot.send_photo(update.message.chat.id, image,
+                                                          caption=f"🎨 **Art Inspiration!**\n\n"
+                                                          f"📌 Prompt: {prompt}\n"
+                                                          f"👤 By: @{update.message.from_user.username}\n\n"
+                                                          f"🌟 {choices(creative_sentences)[0]} 🚀")
+            message_sent_private.forward(log_channel)
+            # context.bot.send_message(
+            #     update.message.chat.id, "in sort time here", reply_markup=reply_markup)
     else:
-        message_sent_private = context.bot.send_photo(update.message.chat.id, image,
-                                                      caption=f"🎨 **Art Inspiration!**\n\n"
-                                                      f"📌 Prompt: {prompt}\n"
-                                                      f"👤 By: @{update.message.from_user.username}\n\n"
-                                                      f"🌟 {choices(creative_sentences)[0]} 🚀")
-        message_sent_private.forward(log_channel)
-        # context.bot.send_message(
-        #     update.message.chat.id, "in sort time here", reply_markup=reply_markup)
+        update.message.reply_text("🌄 Sure thing! Give me a prompt like this: `/prompt Describe a breathtakingly beautiful sunset scene` 🌅\n"
+                                  "Let your imagination run wild! 🚀")
 
 
 def button_click(update, context) -> None:
@@ -142,7 +150,7 @@ def button_click(update, context) -> None:
 def feedback(update, context):
     feedback = update.message.text[len('/feedback '):]
     context.bot.send_message(
-        log_channel, f'New Feedback from, {update.message.chat.username}-{feedback}')
+        log_channel, f'New Feedback from, {update.message.chat.username if update.message.chat.username else update.message.chat.first_name}-{feedback}')
 
 
 app = "place holder"
