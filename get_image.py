@@ -1,9 +1,11 @@
 import requests
 
 from decouple import Config, RepositoryEnv
-config = Config(RepositoryEnv('.env'))
+# config = Config()
 
-API_KEY = config('CLI_API')
+import os
+API_KEY = os.environ.get("CLI_API")
+# = config('CLI_API')
 
 
 class IMAGE:

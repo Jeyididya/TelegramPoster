@@ -1,3 +1,4 @@
+import os
 from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
@@ -11,9 +12,10 @@ from random import choices
 from datetime import datetime
 config = Config(RepositoryEnv('.env'))
 
-BOT_TOKEN = config('BOT_TOKEN')
-channel_name = config('CHANNEL_NAME')
-log_channel = config('LOG_CHANNEL')
+
+BOT_TOKEN = os.environ.get("BOT_TOKEN")  # config('BOT_TOKEN')
+channel_name = os.environ.get("CHANNEL_NAME")  # config('CHANNEL_NAME')
+log_channel = os.environ.get("LOG_CHANNEL")  # config('LOG_CHANNEL')
 db = DATABASE()
 img = IMAGE()
 
@@ -157,7 +159,7 @@ app = "place holder"
 
 
 def main() -> None:
-    bot=Bot(token=BOT_TOKEN)
+    bot = Bot(token=BOT_TOKEN)
     bot.send_message(log_channel, f"Server Started @{datetime.now()}")
     updater = Updater(BOT_TOKEN)
     dp = updater.dispatcher

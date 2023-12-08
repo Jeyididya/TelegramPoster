@@ -2,9 +2,10 @@ from decouple import Config, RepositoryEnv
 from pymongo import MongoClient
 
 
-config = Config(RepositoryEnv('.env'))
+# config = Config(RepositoryEnv('.env'))
 
-db_pass = config('DB_PWD')
+import os
+db_pass = os.environ.get("DB_PWD")  # config('DB_PWD')
 
 # connection_string = f"mongodb+srv://poster_admin:{db_pass}@cluster0.zc1qf6e.mongodb.net/?retryWrites=true&w=majority"
 
